@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
         padding: 8,
         marginTop: 4,
         borderBottomWidth: 1,
-        borderBottomColor: colors.card
+        borderBottomColor: colors.card,
     },
     poster: {
         flex: 1,
@@ -17,8 +17,11 @@ export const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     body: {
+        flexDirection: 'column',
         width: '70%',
-        paddingLeft: 4 
+        height: '100%',
+        paddingLeft: 4,
+        overflow: 'hidden',
     },
     title: {
         color: colors.foreground,
@@ -27,5 +30,5 @@ export const styles = StyleSheet.create({
     },
     bodyText: {
         color: colors.foreground,
-    }
+    },
 })

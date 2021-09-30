@@ -1,69 +1,57 @@
 import React, { useEffect, useState, useReducer } from "react";
 import { View } from "react-native";
 import { MovieList } from '../components/List/MovieList';
-import { tmdb } from '../utilities';
+import { tmdb, formatDate } from '../utilities';
 
 export const PopularScreen = () => {
-    /*
-    const movies = [
-        {
-            name: "Aria the Crepuscolo",
-            poster: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iA5nYOO9L3KuM6uP5chzFrh6vdk.jpg",
-            date: "May 3, 2021",
-            score: 1,
-            vote: 2,
-            id: '1'
-        },
-        {
-            name: "Aria the Crepuscolo",
-            poster: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iA5nYOO9L3KuM6uP5chzFrh6vdk.jpg",
-            date: "May 3, 2021",
-            score: 1,
-            vote: 2,
-            id: '2'
-        },
-        {
-            name: "Aria the Crepuscolo",
-            poster: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iA5nYOO9L3KuM6uP5chzFrh6vdk.jpg",
-            date: "May 3, 2021",
-            score: 1,
-            vote: 2,
-            id: '3'
-        },
-        {
-            name: "Aria the Crepuscolo",
-            poster: "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iA5nYOO9L3KuM6uP5chzFrh6vdk.jpg",
-            date: "May 3, 2021",
-            score: 1,
-            vote: 2,
-            id: '4'
-        },
-    ]*/
+    let initialState  = {
+        movies: [],
+        loading: false,
+        error: null,
 
-    const [movies, setMovies] = useState([]);
+    };
+    const reducer = (state, newState) => ({ ...state, ...newState });
+    const [state, setState] = useReducer(reducer, initialState);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
-        getPopularFirstTime();
-    }, []);
+        getPopular();
+    }, [page]);
 
-    const getPopularFirstTime = async () => {
+    const processMovieList = (list) => {
+        list.forEach((e) => {
+            e.poster_path= `https://www.themoviedb.org/t/p/w600_and_h900_bestv2${e.poster_path}`
+            e.release_date = formatDate(e.release_date) ;
+            e.score = `${e.vote_average * 10}% (${e.vote_count})`
+        });
+
+        return list;
+    }
+
+    const getPopular = async () => {
+        if (state.loading)
+            return;
+
         try {
-            if (movies.length === 0) {
-                let data = await tmdb.movie.popular();
-                setMovies(data.results);
-            }
+            setState({ loading: true });
+            let data = await tmdb.movie.popular({
+                page: page
+            });
+            let processedData = processMovieList(data.results);
+            setState({ movies: state.movies.concat(processedData), loading: false });
         }
         catch (error) {
-            console.error(error);
+           setState({ error: error })
         }
+    }
+    
+    const getMoreMovie = () => {
+        setPage(page + 1);
     }
 
     return (
         <View>
-            { movies.length > 0 ?
-                <MovieList movies={ movies }/>
-                : <></>
-            }
+            <MovieList movies={ state.movies } getMoreMovie={ getMoreMovie }/>
         </View>
     )
 }
