@@ -7,7 +7,8 @@ export const styles = StyleSheet.create({
         backgroundColor: colors.card,
         width: '100%',
         height: 180,
-        padding: 8
+        padding: 8,
+        marginTop: 4
     },
     poster: {
         flex: 1,
