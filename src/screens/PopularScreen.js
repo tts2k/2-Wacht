@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useReducer } from "react";
 import { View } from "react-native";
 import { MovieList } from '../components/List/MovieList';
+import { tmdb } from '../utilities';
 
 export const PopularScreen = () => {
+    /*
     const movies = [
         {
             name: "Aria the Crepuscolo",
@@ -10,7 +12,7 @@ export const PopularScreen = () => {
             date: "May 3, 2021",
             score: 1,
             vote: 2,
-            id: 1
+            id: '1'
         },
         {
             name: "Aria the Crepuscolo",
@@ -18,7 +20,7 @@ export const PopularScreen = () => {
             date: "May 3, 2021",
             score: 1,
             vote: 2,
-            id: 2
+            id: '2'
         },
         {
             name: "Aria the Crepuscolo",
@@ -26,7 +28,7 @@ export const PopularScreen = () => {
             date: "May 3, 2021",
             score: 1,
             vote: 2,
-            id: 3
+            id: '3'
         },
         {
             name: "Aria the Crepuscolo",
@@ -34,19 +36,34 @@ export const PopularScreen = () => {
             date: "May 3, 2021",
             score: 1,
             vote: 2,
-            id: 4
+            id: '4'
         },
-    ]
+    ]*/
 
-    //const initialState = [];
-    //const arrayReducer = (state, newState) => ([...state, newState]);
-    //const [movies, setMovies] = useReducer(arrayReducer, []);
+    const [movies, setMovies] = useState([]);
 
+    useEffect(() => {
+        getPopularFirstTime();
+    }, []);
 
+    const getPopularFirstTime = async () => {
+        try {
+            if (movies.length === 0) {
+                let data = await tmdb.movie.popular();
+                setMovies(data.results);
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <View>
-            <MovieList movies={ movies }/>
+            { movies.length > 0 ?
+                <MovieList movies={ movies }/>
+                : <></>
+            }
         </View>
     )
 }

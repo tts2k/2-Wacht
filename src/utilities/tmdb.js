@@ -1,5 +1,4 @@
-import { TmdbClient } from '@david98hall/tmdb-js';
+import { v3 } from '@leonardocabeza/the-movie-db';
+import { TMDB_API_KEY }from '@env';
 
-let apiKey = process.env.TMDB_API_KEY;
-
-export const tmdb = TmdbClient(apiKey);
+export const tmdb = v3(TMDB_API_KEY);
