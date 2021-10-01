@@ -8,7 +8,6 @@ export const PopularScreen = () => {
         movies: [],
         loading: false,
         error: null,
-
     };
     const reducer = (state, newState) => ({ ...state, ...newState });
     const [state, setState] = useReducer(reducer, initialState);
@@ -45,13 +44,13 @@ export const PopularScreen = () => {
         }
     }
     
-    const getMoreMovie = () => {
+    const loadMoreMovies = () => {
         setPage(page + 1);
     }
 
     return (
         <View>
-            <MovieList movies={ state.movies } getMoreMovie={ getMoreMovie }/>
+            <MovieList movies={ state.movies } loadMoreMovies={ loadMoreMovies } showSpinner={ state.loading }/>
         </View>
     )
 }
