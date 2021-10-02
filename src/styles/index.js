@@ -1,4 +1,4 @@
-import { screenOptions, navigationTheme } from './navigationStyles';
+import { screenOptions, navigationTheme, movieListScreenOptions } from './navigationStyles';
 import { colors } from './colors'
 
-export { screenOptions, navigationTheme, colors};
+export { screenOptions, navigationTheme, colors, movieListScreenOptions };

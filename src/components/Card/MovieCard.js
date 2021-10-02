@@ -1,10 +1,16 @@
 import React from 'react';
 import { Text, TouchableOpacity, Image, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { styles as S } from './styles';
 
 export const MovieCard = ({ movie }) => {
+    const navigation = useNavigation();
+    const openDetailScreen = () => {
+        navigation.navigate('Movie Detail');
+    }
+
     return (
-        <TouchableOpacity style={ S.container }>
+        <TouchableOpacity style={ S.container } onPress={ openDetailScreen }>
             <Image source={{ uri: movie.poster_path }} style={ S.poster }/>
             <View style={ S.body }>
                 <Text style={ S.title } numberOfLines={2}>{ movie.title }</Text>
