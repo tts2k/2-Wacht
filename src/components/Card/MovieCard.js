@@ -6,7 +6,7 @@ import { styles as S } from './styles';
 export const MovieCard = ({ movie }) => {
     const navigation = useNavigation();
     const openDetailScreen = () => {
-        navigation.navigate('Movie Detail');
+        navigation.navigate('Movie Detail', { id: movie.id });
     }
 
     return (
