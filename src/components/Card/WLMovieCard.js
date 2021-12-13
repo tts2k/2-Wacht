@@ -4,10 +4,13 @@ import Menu, { MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-m
 import { useNavigation } from '@react-navigation/native';
 import { styles as S, optionsStyles} from './styles';
 import { deleteMovie } from '../../utilities/sqlite';
+import { useDispatch } from 'react-redux';
+import { INSERT_MOVIE } from '../../store/taskTypes';
 
 export const WLMovieCard = ({ movie }) => {
     let menu;
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     const openDetailScreen = () => {
         navigation.navigate('Movie Detail', { id: movie.id });
@@ -15,6 +18,7 @@ export const WLMovieCard = ({ movie }) => {
 
     const addToLocalList = () => {
         deleteMovie(movie.id);
+        dispatch({ type: INSERT_MOVIE })
         ToastAndroid.show("Deleted from local list", ToastAndroid.SHORT)
     }
 

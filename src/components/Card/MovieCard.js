@@ -4,18 +4,28 @@ import Menu, { MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-m
 import { useNavigation } from '@react-navigation/native';
 import { styles as S, optionsStyles} from './styles';
 import { insertMovie } from '../../utilities/sqlite';
+import { useDispatch } from 'react-redux';
+import { INSERT_MOVIE } from '../../store/taskTypes'
 
 export const MovieCard = ({ movie }) => {
     let menu;
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     const openDetailScreen = () => {
         navigation.navigate('Movie Detail', { id: movie.id });
     }
 
-    const addToLocalList = () => {
-        insertMovie(movie);
-        ToastAndroid.show("Added to local list", ToastAndroid.SHORT)
+    const addToLocalList = async () => {
+        try {
+            await insertMovie(movie);
+            dispatch({ type: INSERT_MOVIE })
+            ToastAndroid.show("Added to local list", ToastAndroid.SHORT)
+        } catch (error) {
+            if (error.message.startsWith("UNIQUE")) {
+                ToastAndroid.show("You have already added this movie to your list", ToastAndroid.SHORT);
+            }
+        }
     }
 
     const openMenu = () => {

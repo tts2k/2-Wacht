@@ -3,7 +3,7 @@ import { FlatList, ActivityIndicator, View } from 'react-native';
 import { WLMovieCard } from '../Card/WLMovieCard';
 import { colors } from '../../styles'
 
-export const WLMovieList = ({ movies, loadMoreMovies, showSpinner}) => {
+export const WLMovieList = ({ movies, showSpinner}) => {
     const renderItem = ({ item }) => (
         <WLMovieCard movie={ item } />
     )
@@ -26,7 +26,6 @@ export const WLMovieList = ({ movies, loadMoreMovies, showSpinner}) => {
                     renderItem={ renderItem }
                     keyExtractor={ (item,index) => `${index}${item.id}` }
                     ListFooterComponent={ footer }
-                    onEndReached={ loadMoreMovies }
                     onEndReachedThreshold={ 0.7 }
                 />
             </View>
