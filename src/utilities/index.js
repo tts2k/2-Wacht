@@ -1,4 +1,4 @@
 import { tmdb } from './tmdb';
-import { formatDate } from './movieDate'
+import { formatDate, downloadImageToBase64} from './misc'
 
-export { tmdb, formatDate };
+export { tmdb, formatDate, downloadImageToBase64};

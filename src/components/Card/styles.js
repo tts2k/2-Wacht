@@ -1,7 +1,7 @@
 import { colors }from '../../styles';
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         width: '100%',
@@ -32,3 +32,15 @@ export const styles = StyleSheet.create({
         color: colors.foreground,
     },
 })
+
+const optionsStyles = {
+    optionsContainer: {
+        backgroundColor: colors.background,
+        padding: 10,
+    },
+    optionText: {
+        color: colors.foreground
+    }
+}
+
+export { styles, optionsStyles };
