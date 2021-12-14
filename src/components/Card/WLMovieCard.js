@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, TouchableOpacity, Image, View, ToastAndroid } from 'react-native';
 import Menu, { MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu'
 import { useNavigation } from '@react-navigation/native';
 import { styles as S, optionsStyles} from './styles';
-import { deleteMovie } from '../../utilities/sqlite';
+import { deleteMovie, updateStatus} from '../../utilities/sqlite';
 import { useDispatch } from 'react-redux';
 import { INSERT_MOVIE } from '../../store/taskTypes';
+import { Picker } from '@react-native-picker/picker';
+import { colors } from '../../styles';
 
 export const WLMovieCard = ({ movie }) => {
     let menu;
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const [status, setStatus]  = useState(movie.status);
 
     const openDetailScreen = () => {
         navigation.navigate('Movie Detail', { id: movie.id });
@@ -30,6 +33,12 @@ export const WLMovieCard = ({ movie }) => {
         menu = r;
     }
 
+    const onStatusChange = (itemValue) => {
+        setStatus(itemValue);
+        movie.status = itemValue;
+        updateStatus(movie.id, itemValue)
+    }
+
     return (
         <TouchableOpacity style={ S.container } onPress={ openDetailScreen } onLongPress={ () => openMenu() }>
             <Image source={{ uri: `data:image/jpg;base64,${movie.poster}`}} style={ S.poster }/>
@@ -37,8 +46,18 @@ export const WLMovieCard = ({ movie }) => {
                 <Text style={ S.title } numberOfLines={2}>{ movie.name }</Text>
                 <Text style={ S.bodyText }>{ movie.release_date }</Text>
                 <Text style={ S.bodyText }>Score: { movie.score }</Text>
-                <View>
-                    <Text style={ S.bodyText } numberOfLines={4}>{ movie.synopsis }</Text>
+                <View style={ S.pickerContainer }>
+                    <Picker
+                        selectedValue={ status }
+                        onValueChange={ onStatusChange }
+                        style={ S.picker }
+                        mode="dropdown"
+                        dropdownIconColor={ colors.foreground }
+                    >
+                        <Picker.Item label="Planned" value="Planned" />
+                        <Picker.Item label="Watching" value="Waching" />
+                        <Picker.Item label="On-hold" value="On-Hold" />
+                    </Picker>
                 </View>
             </View>
             <Menu ref={ onRef }>

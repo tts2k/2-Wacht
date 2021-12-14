@@ -31,6 +31,15 @@ const styles = StyleSheet.create({
     bodyText: {
         color: colors.foreground,
     },
+    picker: {
+        color: colors.foreground,
+        height: 50,
+    },
+    pickerContainer: {
+        borderWidth: 1,
+        borderColor: colors.border,
+        marginTop: 20
+    }
 })
 
 const optionsStyles = {
@@ -39,7 +48,7 @@ const optionsStyles = {
         padding: 10,
     },
     optionText: {
-        color: colors.foreground
+        color: colors.foreground,
     }
 }
 

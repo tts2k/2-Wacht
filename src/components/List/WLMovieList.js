@@ -5,7 +5,7 @@ import { colors } from '../../styles'
 
 export const WLMovieList = ({ movies, showSpinner}) => {
     const renderItem = ({ item }) => (
-        <WLMovieCard movie={ item } />
+        <WLMovieCard key={item.id} movie={ item } />
     )
     
     const footer = () => {

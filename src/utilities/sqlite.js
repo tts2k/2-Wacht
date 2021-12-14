@@ -57,4 +57,18 @@ const deleteMovie = (id) => {
     })
 }
 
-export { createDatabase, getAllMovies, insertMovie, deleteMovie };
+const updateStatus = (id, status) => {
+    db.transaction((tx) => {
+        tx.executeSql(`UPDATE Movies
+            SET status = ?
+            WHERE id = ?
+        `, [status, id],
+            null,
+            (_, err) => {
+                console.log(err);
+            }
+        )
+    })
+}
+
+export { createDatabase, getAllMovies, insertMovie, deleteMovie, updateStatus };
