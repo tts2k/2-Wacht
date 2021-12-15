@@ -64,12 +64,12 @@ export const StatsScreen = () => {
 
     return(
         <View>
-            <Text>Basic Statistics</Text>
+            <Text style={{color: colors.foreground, fontSize: 30, textAlign: 'center'}}>Basic Statistics</Text>
             <View>
-                <Text>No. of Movies: {state.numMovies}</Text>
-                <Text>No. of Watched Movies: {state.numWatched}</Text>
-                <Text>No. of Planned Movies: {state.numPlanned}</Text>
-                <Text>No. of Dropped Movies: {state.numDropped}</Text>
+                <Text style={{color: colors.foreground, fontSize: 15, textAlign: 'center'}}>No. of Movies: {state.numMovies}</Text>
+                <Text style={{color: colors.foreground, fontSize: 15, textAlign: 'center'}}>No. of Watched Movies: {state.numWatched}</Text>
+                <Text style={{color: colors.foreground, fontSize: 15, textAlign: 'center'}}>No. of Planned Movies: {state.numPlanned}</Text>
+                <Text style={{color: colors.foreground, fontSize: 15, textAlign: 'center'}}>No. of Dropped Movies: {state.numDropped}</Text>
             </View>
         </View>
     )
