@@ -13,7 +13,8 @@ export const MovieCard = ({ movie }) => {
     const dispatch = useDispatch();
 
     const openDetailScreen = () => {
-        navigation.navigate('Movie Detail', { id: movie.id });
+        navigation.navigate('Movie Detail', { id: movie.id , title: movie.title, poster_path: movie.poster_path, backdrop_path: movie.backdrop_path,  
+            score: movie.score, release_date: movie.release_date, genre: movie.genre_ids, overview: movie.overview });
     }
 
     const addToLocalList = async () => {
@@ -56,3 +57,4 @@ export const MovieCard = ({ movie }) => {
         </TouchableOpacity>
     );
 }
+
