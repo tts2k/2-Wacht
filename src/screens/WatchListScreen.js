@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, Button, TextInput } from "react-native";
 import { colors } from '../styles';
 import { tmdb, formatDate } from '../utilities';
+import { useNavigation } from '@react-navigation/core';
 
 export const WatchListScreen = () => {
+    const navigation = useNavigation();
+    
     const [movies, setMovies] = useState([]);
     const [adding, setAdding] = useState(false);
     const [title, setTitle] = useState('');
@@ -48,10 +51,14 @@ export const WatchListScreen = () => {
         setAdding(false);
     }
     
+    const openStatsScreen = () => {
+        navigation.navigate("Statistics");
+    }
+    
     return (
         <View>
             <Button title="Add" onPress={() => setAdding(true)}/>
-            <Button title="View Stats" onPress={openStatsScreen}/>
+            <Button title="Movie Statistics" onPress={openStatsScreen}/>
             <View style={adding ? styles.form : styles.hidden}>
                 <Text style={{color: colors.foreground}}>Title</Text>
                 <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1, color: colors.foreground}} value={title} onChangeText={titleHandler}></TextInput>
