@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { WLMovieList } from "../components/List/WLMovieList"
-import { getAllMovies } from "../utilities/sqlite";
+import { db } from "../utilities";
 import { useSelector } from "react-redux"
 
 export const WatchListScreen = () => {
@@ -13,7 +13,7 @@ export const WatchListScreen = () => {
     }, [refresh]);
 
     const getListMovies = async () => {
-        let movies = await getAllMovies();
+        let movies = await db.getAllMovies();
         let moviesList = movies.rows._array;
         setMovies([...moviesList]);
     };

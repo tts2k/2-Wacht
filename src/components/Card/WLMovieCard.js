@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Text, TouchableOpacity, Image, View, ToastAndroid } from 'react-native';
 import Menu, { MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu'
 import { useNavigation } from '@react-navigation/native';
-import { styles as S, optionsStyles} from './styles';
+import { styles as S } from './styles';
 import { deleteMovie, updateStatus} from '../../utilities/sqlite';
 import { useDispatch } from 'react-redux';
 import { INSERT_MOVIE } from '../../store/taskTypes';
 import { Picker } from '@react-native-picker/picker';
-import { colors } from '../../styles';
+import { colors, popupStyles } from '../../styles';
 
 export const WLMovieCard = ({ movie }) => {
     let menu;
@@ -62,7 +62,7 @@ export const WLMovieCard = ({ movie }) => {
             </View>
             <Menu ref={ onRef }>
                 <MenuTrigger text=''/>
-                <MenuOptions customStyles={ optionsStyles }>
+                <MenuOptions customStyles={ popupStyles }>
                     <MenuOption onSelect={ () => addToLocalList() } value={1} text="Delete from watch list" />
                 </MenuOptions>
             </Menu>

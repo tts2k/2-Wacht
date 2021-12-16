@@ -11,6 +11,17 @@ const formatDate = (date) => {
     return `${month} ${d.getDay()}, ${d.getFullYear()}`
 }
 
+const generateDateForExport = () => {
+    let d = new Date()
+        .toJSON()
+        .slice(0,19)
+        .replace(/-/g,'')
+        .replace(/:/g,'')
+        .replace(/T/g,'')
+        .toString();
+    return d;
+}
+
 const downloadImageToBase64 = async (url) => {
     let result = await FileSystem.downloadAsync(url, FileSystem.cacheDirectory + "poster.tmp");
     let base64 = await FileSystem.readAsStringAsync(result.uri, { encoding: FileSystem.EncodingType.Base64 });
@@ -18,4 +29,4 @@ const downloadImageToBase64 = async (url) => {
     return base64;
 }
 
-export { formatDate, downloadImageToBase64 };
+export { formatDate, downloadImageToBase64, generateDateForExport };

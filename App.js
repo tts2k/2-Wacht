@@ -2,13 +2,13 @@ import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { BaseNavigation } from './src/navigation/BaseNavigation'
 import { MenuProvider } from 'react-native-popup-menu';
-import { createDatabase } from './src/utilities/sqlite';
+import { db } from './src/utilities';
 import store from './src/store/store';
 import { Provider } from 'react-redux';
 
 export default function App() {
     useEffect(() => {
-        createDatabase();
+        db.createDatabase();
     })
     return (
         <Provider store={store}>

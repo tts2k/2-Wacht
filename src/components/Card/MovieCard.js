@@ -4,7 +4,7 @@ import Menu, { MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-m
 import { useNavigation } from '@react-navigation/native';
 import { styles as S } from './styles';
 import { popupStyles } from '../../styles'
-import { insertMovie } from '../../utilities/sqlite';
+import { db } from '../../utilities';
 import { useDispatch } from 'react-redux';
 import { INSERT_MOVIE } from '../../store/taskTypes'
 
@@ -20,7 +20,7 @@ export const MovieCard = ({ movie }) => {
 
     const addToLocalList = async () => {
         try {
-            await insertMovie(movie);
+            await db.insertMovie(movie);
             dispatch({ type: INSERT_MOVIE })
             ToastAndroid.show("Added to local list", ToastAndroid.SHORT)
         } catch (error) {

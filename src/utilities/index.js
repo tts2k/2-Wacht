@@ -1,4 +1,5 @@
 import { tmdb } from './tmdb';
-import { formatDate, downloadImageToBase64} from './misc'
+import { formatDate, generateDateForExport } from './misc'
+import * as db from './sqlite'
 
-export { tmdb, formatDate, downloadImageToBase64};
+export { tmdb, formatDate, generateDateForExport, db };

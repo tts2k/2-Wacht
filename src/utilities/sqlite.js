@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-import { downloadImageToBase64 } from ".";
+import { downloadImageToBase64 } from "./misc";
 
 const db = SQLite.openDatabase("wl.db");
 
@@ -51,6 +51,23 @@ const insertMovie = async (movie) => {
     })
 }
 
+const insertMovieImport = async (movie) => {
+    return new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql(`INSERT INTO Movies
+                (tmdbid, name, synopsis, status, genre, score, poster, release_date) values
+                (?, ?, ?, ?, ?, ?, ?, ?)`,
+                [movie.tmdbid, movie.name, movie.synopsis, movie.status, '', movie.score, movie.poster, movie.release_date],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, err) => {
+                    reject(err);
+                })
+        }, null, null)
+    })
+}
+
 const deleteMovie = (id) => {
     db.transaction((tx) => {
         tx.executeSql(`DELETE FROM Movies WHERE id = ?`, [id])
@@ -71,4 +88,4 @@ const updateStatus = (id, status) => {
     })
 }
 
-export { createDatabase, getAllMovies, insertMovie, deleteMovie, updateStatus };
+export { createDatabase, getAllMovies, insertMovie, deleteMovie, updateStatus, insertMovieImport };
