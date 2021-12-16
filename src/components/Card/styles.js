@@ -42,14 +42,4 @@ const styles = StyleSheet.create({
     }
 })
 
-const optionsStyles = {
-    optionsContainer: {
-        backgroundColor: colors.background,
-        padding: 10,
-    },
-    optionText: {
-        color: colors.foreground,
-    }
-}
-
-export { styles, optionsStyles };
+export { styles };
