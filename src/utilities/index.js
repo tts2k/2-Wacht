@@ -1,4 +1,5 @@
 import { tmdb } from './tmdb';
-import { formatDate } from './movieDate'
+import { formatDate, generateDateForExport } from './misc'
+import * as db from './sqlite'
 
-export { tmdb, formatDate };
+export { tmdb, formatDate, generateDateForExport, db };

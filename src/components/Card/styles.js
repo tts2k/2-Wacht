@@ -1,7 +1,7 @@
 import { colors }from '../../styles';
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         width: '100%',
@@ -31,4 +31,15 @@ export const styles = StyleSheet.create({
     bodyText: {
         color: colors.foreground,
     },
+    picker: {
+        color: colors.foreground,
+        height: 50,
+    },
+    pickerContainer: {
+        borderWidth: 1,
+        borderColor: colors.border,
+        marginTop: 20
+    }
 })
+
+export { styles };

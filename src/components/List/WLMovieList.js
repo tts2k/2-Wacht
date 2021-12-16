@@ -1,11 +1,11 @@
 import React from 'react';
 import { FlatList, ActivityIndicator, View } from 'react-native';
-import { MovieCard } from '../Card/MovieCard';
+import { WLMovieCard } from '../Card/WLMovieCard';
 import { colors } from '../../styles'
 
-export const MovieList = ({ movies, loadMoreMovies, showSpinner}) => {
+export const WLMovieList = ({ movies, showSpinner}) => {
     const renderItem = ({ item }) => (
-        <MovieCard movie={ item } />
+        <WLMovieCard key={item.id} movie={ item } />
     )
     
     const footer = () => {
@@ -26,7 +26,6 @@ export const MovieList = ({ movies, loadMoreMovies, showSpinner}) => {
                     renderItem={ renderItem }
                     keyExtractor={ (item,index) => `${index}${item.id}` }
                     ListFooterComponent={ footer }
-                    onEndReached={ loadMoreMovies }
                     onEndReachedThreshold={ 0.7 }
                 />
             </View>

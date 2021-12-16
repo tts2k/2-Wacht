@@ -32,6 +32,17 @@
     "androidNavigationBar": {
         "barStyle": "light-content",
         "backgroundColor":"#3B4252"
+    },
+    "plugins":
+        [
+            [
+                "expo-media-library",
+                {
+                  "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
+                  "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+                  "isAccessMediaLocationEnabled": true
+                }
+            ]
+        ]
     }
-  }
 }
