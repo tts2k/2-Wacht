@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { WatchListScreen, MovieDetailScreen } from '../screens';
+import { WatchListScreen, MovieDetailScreen, StatisticsScreen } from '../screens';
 import { movieListScreenOptions } from '../styles';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
@@ -74,6 +74,7 @@ export const WatchListScreenNavigation = () => {
         <Stack.Navigator screenOptions={ movieListScreenOptions }>
             <Stack.Screen name="Watch list" component={ WatchListScreen } options={ wlOptions }/>
             <Stack.Screen name="Movie Detail" component={ MovieDetailScreen }/>
+            <Stack.Screen name="Statistics" component={ StatisticsScreen }/>
         </Stack.Navigator>
     )
 }
