@@ -56,7 +56,7 @@ export const WLMovieCard = ({ movie }) => {
                         dropdownIconColor={ colors.foreground }
                     >
                         <Picker.Item label="Planned" value="Planned" />
-                        <Picker.Item label="Watching" value="Watching" />
+                        <Picker.Item label="Watched" value="Watched" />
                         <Picker.Item label="On-hold" value="On-Hold" />
                     </Picker>
                 </View>

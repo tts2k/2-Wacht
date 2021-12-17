@@ -29,7 +29,7 @@ export const WatchListScreenNavigation = () => {
             dirPerms = await StorageAccessFramework.requestDirectoryPermissionsAsync();
         }
         if (dirPerms.granted) {
-            let uri = await StorageAccessFramework.createFileAsync(dirPerms.directoryUri, date, "application/json");
+            let uri = await StorageAccessFramework.createFileAsync(dirPerms.directoryUri, date + ".json", "application/json");
             StorageAccessFramework.writeAsStringAsync(uri, JSON.stringify(dataArray))
             .then(() =>{
                 ToastAndroid.show("Watch list exported", ToastAndroid.SHORT);
@@ -38,21 +38,25 @@ export const WatchListScreenNavigation = () => {
     }
 
     const importData = async () => {
-        let doc = await DocumentPicker.getDocumentAsync({ 
-            type: "application/json",
-            copyToCacheDirectory: false
-        });
-        let dataString = await readAsStringAsync(doc.uri);
-        let data = JSON.parse(dataString);
-        let promises = [];
+        try {
+            let doc = await DocumentPicker.getDocumentAsync({ 
+                type: "*/*",
+                copyToCacheDirectory: false
+            });
+            let dataString = await readAsStringAsync(doc.uri);
+            let data = JSON.parse(dataString);
+            let promises = [];
 
-        data.forEach((e) => {
-            promises.push(db.insertMovieImport(e));
-        })
+            data.forEach((e) => {
+                promises.push(db.insertMovieImport(e));
+            })
 
-        Promise.all(promises).then(() =>{
-            dispatch({ type: INSERT_MOVIE })
-        })
+            Promise.all(promises).then(() =>{
+                dispatch({ type: INSERT_MOVIE })
+            })
+        } catch (error) {
+            console.log(error);
+        }
 
     }
 
@@ -72,13 +76,13 @@ export const WatchListScreenNavigation = () => {
                     <MenuOption text="View stats" onSelect={ () => openStatScreen() }/>
                 </MenuOptions>
             </Menu>
-        )
+        ),
     }
 
     return (
         <Stack.Navigator screenOptions={ movieListScreenOptions }>
             <Stack.Screen name="Watch list" component={ WatchListScreen } options={ wlOptions }/>
-            <Stack.Screen name="WL Movie Detail" component={ WLMovieDetailScreen }/>
+            <Stack.Screen name="WL Movie Detail" component={ WLMovieDetailScreen } options={ {headerTitle: "Movie Detail" } }/>
             <Stack.Screen name="Statistics" component={ StatisticsScreen }/>
         </Stack.Navigator>
     )

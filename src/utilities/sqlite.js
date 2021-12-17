@@ -173,6 +173,7 @@ const getStats = async () => {
 
     try {
         await Promise.all([countAllPromise, countPlannedPromise, countWatchedPromise, countDroppedPromise]);
+        return finalResult;
     }
     catch (error) {
     }

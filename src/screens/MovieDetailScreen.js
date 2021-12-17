@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Image, ScrollView } from 'react-native';
-import {View, Text } from "react-native";
+import { View, Text } from "react-native";
 import { colors } from '../styles';
 import { genres } from '../constants'
 import { useDispatch } from "react-redux";
 import { OPEN_LINK } from "../store/taskTypes";
+import { tmdb } from "../utilities";
+import { SimliarList } from "../components/List/SimilarList";
 
 export const MovieDetailScreen = ({ route }) => {  
   
   const dispatch = useDispatch();
+  const [similar, setSimilar] = useState([]);
   let data = route.params;
   let gensName = [];
 
@@ -18,6 +21,13 @@ export const MovieDetailScreen = ({ route }) => {
         gensName.push(genres[i].name);
     }
   }
+
+    useEffect(() => {
+        tmdb.movie.similar(data.id, { page: 1 }).then((res) => {
+            let newArr = [...res.results];
+            setSimilar(newArr);
+        });
+    },[])
 
   dispatch({ type: OPEN_LINK, payload: `https://www.themoviedb.org/movie/${data.id}` })
 
@@ -64,7 +74,10 @@ export const MovieDetailScreen = ({ route }) => {
               <Text style={{fontSize: 18, color: colors.foreground }}>{ data.overview }</Text>
           </View>
         </View>
+       <Text style={{  fontSize: 20, color: colors.foreground, marginBottom: 10, fontWeight: 'bold' }}>Simliar: </Text>
+        <SimliarList movies={ similar } />
       </ScrollView>
+
   </View>
 );
 };

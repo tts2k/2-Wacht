@@ -16,6 +16,15 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: 'contain'
     },
+    similarImage: {
+        width: 100,
+        height: 150,
+        alignSelf: "center"
+    },
+    similarContainer: {
+        padding: 10,
+        width: 120
+    },
     body: {
         flexDirection: 'column',
         width: '70%',
@@ -27,6 +36,12 @@ const styles = StyleSheet.create({
         color: colors.foreground,
         fontSize: 20,
         fontWeight: 'bold'
+    },
+    smallTitle: {
+        color: colors.foreground,
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center'
     },
     bodyText: {
         color: colors.foreground,
