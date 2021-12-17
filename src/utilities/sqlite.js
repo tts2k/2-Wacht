@@ -14,6 +14,7 @@ const createDatabase = async () => {
             genre TEXT,
             score TEXT,
             poster TEXT,
+            backdrop TEXT,
             release_date TEXT);`
         );
     }, [])
@@ -22,7 +23,7 @@ const createDatabase = async () => {
 const getAllMovies = async () => {
     return new Promise((resolve, reject) =>{
         db.transaction((tx) => {
-            tx.executeSql('SELECT * FROM Movies', [], 
+            tx.executeSql('SELECT id, name, release_date, poster, score, status FROM Movies', [], 
                 (_, result) => {
                     resolve(result);
                 },
@@ -33,14 +34,29 @@ const getAllMovies = async () => {
         })
 }
 
+const getMovie = async (id) => {
+    return new Promise((resolve, reject) =>{
+        db.transaction((tx) => {
+            tx.executeSql('SELECT * FROM Movies WHERE id = ?', [id], 
+                (_, result) => {
+                    resolve(result.rows.item(0));
+                },
+                (_, err) => {
+                    reject(err);
+                })
+            })
+        })
+}
+
 const insertMovie = async (movie) => {
     let poster = await downloadImageToBase64(movie.poster_path);
+    let backdrop = await downloadImageToBase64(`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`);
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(`INSERT INTO Movies
-                (tmdbid, name, synopsis, status, genre, score, poster, release_date) values
-                (?, ?, ?, ?, ?, ?, ?, ?)`,
-                [movie.id, movie.title, movie.overview, "Planned", '', movie.score, poster, movie.release_date],
+                (tmdbid, name, synopsis, status, genre, score, poster, release_date, backdrop) values
+                (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [movie.id, movie.title, movie.overview, "Planned", JSON.stringify(movie.genre_ids), movie.score, poster, movie.release_date, backdrop],
                 (_, result) => {
                     resolve(result);
                 },
@@ -157,13 +173,10 @@ const getStats = async () => {
 
     try {
         await Promise.all([countAllPromise, countPlannedPromise, countWatchedPromise, countDroppedPromise]);
-        console.log(finalResult);
-        return finalResult;
     }
     catch (error) {
-        console.log(error);
     }
 }
 
 
-export { createDatabase, getAllMovies, insertMovie, deleteMovie, updateStatus, insertMovieImport, getStats };
+export { createDatabase, getAllMovies, insertMovie, deleteMovie, updateStatus, insertMovieImport, getStats, getMovie };

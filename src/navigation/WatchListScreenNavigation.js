@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { WatchListScreen, MovieDetailScreen, StatisticsScreen } from '../screens';
+import { WatchListScreen, WLMovieDetailScreen, StatisticsScreen } from '../screens';
 import { movieListScreenOptions } from '../styles';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
@@ -52,7 +52,6 @@ export const WatchListScreenNavigation = () => {
 
         Promise.all(promises).then(() =>{
             dispatch({ type: INSERT_MOVIE })
-            console.log('done');
         })
 
     }
@@ -79,7 +78,7 @@ export const WatchListScreenNavigation = () => {
     return (
         <Stack.Navigator screenOptions={ movieListScreenOptions }>
             <Stack.Screen name="Watch list" component={ WatchListScreen } options={ wlOptions }/>
-            <Stack.Screen name="Movie Detail" component={ MovieDetailScreen }/>
+            <Stack.Screen name="WL Movie Detail" component={ WLMovieDetailScreen }/>
             <Stack.Screen name="Statistics" component={ StatisticsScreen }/>
         </Stack.Navigator>
     )

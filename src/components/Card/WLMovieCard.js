@@ -16,7 +16,7 @@ export const WLMovieCard = ({ movie }) => {
     const [status, setStatus]  = useState(movie.status);
 
     const openDetailScreen = () => {
-        navigation.navigate('Movie Detail', { id: movie.id });
+        navigation.navigate('WL Movie Detail', { id: movie.id });
     }
 
     const addToLocalList = () => {

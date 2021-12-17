@@ -1,6 +1,10 @@
 import React from 'react';
 import { colors } from './colors'
 import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native';
+import { Linking } from 'react-native';
+import store from '../store/store';
 
 export const screenOptions = ({ route }) => ({
     tabBarIcon: ({ focused, color }) => {
@@ -38,3 +42,17 @@ export const navigationTheme = {
 export const movieListScreenOptions = {
     presentation: 'modal'
 }
+
+const openLink = () => {
+    const url = store.getState().urlToOpen;
+    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
+}
+
+export const detailModalOptions = {
+    headerRight: () => (
+        <TouchableOpacity onPress={ () => openLink() }>
+            <MaterialCommunityIcons name="web" size={25} color={ colors.foreground }  style={{ paddingRight: 10 }}/>
+        </TouchableOpacity>
+    )
+}
+
