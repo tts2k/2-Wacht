@@ -1,76 +1,94 @@
-import React, {useReducer, useEffect} from "react";
-import { View, Text, StyleSheet, Button} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text } from "react-native";
 import { colors } from '../styles';
-import {SQLite} from 'expo-sqlite';
+import { db } from '../utilities'
+import { useSelector } from 'react-redux';
+import { PieChart } from 'react-native-chart-kit';
+import { useWindowDimensions } from 'react-native';
 
-export const StatsScreen = () => {
-    let initialState = {
-        numMovies: 0,
-        numWatched: 0,
-        numPlanned: 0,
-        numDropped: 0
-    }
-    const reducer = (state, newState) => ({ ...state, ...newState });
-    const [state, setState] = useReducer(reducer, initialState);
+export const StatisticsScreen = () => {
+    const initialState = [
+      {
+        name: "Watched",
+        num: 0,
+        color: colors.red,
+        legendFontColor: "#7F7F7F",
+        legendFontSize: 15
+      },
+      {
+        name: "Planned",
+        num: 0,
+        color: colors.yellow,
+        legendFontColor: "#7F7F7F",
+        legendFontSize: 15
+      },
+      {
+        name: "Dropped",
+        num: 0,
+        color: colors.green,
+        legendFontColor: "#7F7F7F",
+        legendFontSize: 15
+      },
+    ];
+
+    const [state, setState] = useState(initialState);
+    const refresh = useSelector((state) => state.watchListState)
+    const window = useWindowDimensions();
 
     useEffect(() => {
         getBasicStats();
-    }, [])
+    }, [refresh])
 
-    const getBasicStats = () => {
-        let db = null;
-        try{
-            db = SQLite.openDatabase('wl.db');
-              db.transaction(function(tx) {
-                  tx.executeSql("SELECT COUNT(*) FROM Movies", [],
-                  function(tx, result) {
-                      setState({numMovies: result.rows.item(0)["count(*)"]});
-                  },
-                  function(tx, error){
-                  }
-                  );
-              });
-              db.transaction(function(tx) {
-                tx.executeSql("SELECT COUNT(*) FROM Movies WHERE status = 'Planned'", [],
-                function(tx, result) {
-                    setState({numPlanned: result.rows.item(0)["count(*)"]});
-                },
-                function(tx, error){
-                }
-                );
-            });
-            db.transaction(function(tx) {
-                tx.executeSql("SELECT COUNT(*) FROM Movies WHERE status = 'Watched'", [],
-                function(tx, result) {
-                    setState({numWatched: result.rows.item(0)["count(*)"]});
-                },
-                function(tx, error){
-                }
-                );
-            });
-            db.transaction(function(tx) {
-                tx.executeSql("SELECT COUNT(*) FROM Movies WHERE status = 'Dropped'", [],
-                function(tx, result) {
-                    setState({numDropped: result.rows.item(0)["count(*)"]});
-                },
-                function(tx, error){
-                }
-                );
-            });
-        }catch(error){
-      console.log("Operation(s) could not be completed");
-        }
+    const getBasicStats = async () => {
+        let res = await db.getStats();
+        setState([
+            {
+                name: "Watched",
+                num: res.watched,
+                color: colors.red,
+                legendFontColor: "#7F7F7F",
+                legendFontSize: 15
+            },
+            {
+                name: "Planned",
+                num: res.planned,
+                color: colors.yellow,
+                legendFontColor: "#7F7F7F",
+                legendFontSize: 15
+            },
+            {
+                name: "On-Hold",
+                num: res.onhold,
+                color: colors.green,
+                legendFontColor: "#7F7F7F",
+                legendFontSize: 15
+            },
+        ])
+    }
+
+
+    const chartConfig = {
+        backgroundColor: "#e26a00",
+        backgroundGradientFrom: "#fb8c00",
+        backgroundGradientTo: "#ffa726",
+        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
     }
 
     return(
         <View>
-            <Text style={{color: colors.foreground, fontSize: 30, textAlign: 'center'}}>Basic Statistics</Text>
-            <View>
-                <Text style={{color: colors.foreground, fontSize: 15, textAlign: 'center'}}>No. of Movies: {state.numMovies}</Text>
-                <Text style={{color: colors.foreground, fontSize: 15, textAlign: 'center'}}>No. of Watched Movies: {state.numWatched}</Text>
-                <Text style={{color: colors.foreground, fontSize: 15, textAlign: 'center'}}>No. of Planned Movies: {state.numPlanned}</Text>
-                <Text style={{color: colors.foreground, fontSize: 15, textAlign: 'center'}}>No. of Dropped Movies: {state.numDropped}</Text>
-            </View>
+            <Text style={{color: colors.foreground, fontSize: 30, textAlign: 'center'}}>Statistics</Text>
+            <PieChart
+              data={ state }
+              width={ window.width }
+              height={ 300 }
+              chartConfig={ chartConfig }
+              accessor={ "num" }
+              backgroundColor={ "transparent" }
+              paddingLeft={ "15" }
+              center={ [10, 10] }
+              absolute
+            />
         </View>
     )
 }

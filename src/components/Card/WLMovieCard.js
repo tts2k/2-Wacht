@@ -33,10 +33,11 @@ export const WLMovieCard = ({ movie }) => {
         menu = r;
     }
 
-    const onStatusChange = (itemValue) => {
+    const onStatusChange = async (itemValue) => {
         setStatus(itemValue);
         movie.status = itemValue;
-        updateStatus(movie.id, itemValue)
+        await updateStatus(movie.id, itemValue)
+        dispatch({ type: INSERT_MOVIE })
     }
 
     return (
@@ -55,7 +56,7 @@ export const WLMovieCard = ({ movie }) => {
                         dropdownIconColor={ colors.foreground }
                     >
                         <Picker.Item label="Planned" value="Planned" />
-                        <Picker.Item label="Watching" value="Waching" />
+                        <Picker.Item label="Watching" value="Watching" />
                         <Picker.Item label="On-hold" value="On-Hold" />
                     </Picker>
                 </View>

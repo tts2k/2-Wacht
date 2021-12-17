@@ -11,11 +11,13 @@ import { ToastAndroid } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { useDispatch } from 'react-redux';
 import { INSERT_MOVIE } from '../store/taskTypes';
+import { useNavigation } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 
 export const WatchListScreenNavigation = () => {
     const dispatch = useDispatch();
+    const navigation = useNavigation();
     let dirPerms = null;
 
     const exportData = async () => {
@@ -55,6 +57,10 @@ export const WatchListScreenNavigation = () => {
 
     }
 
+    const openStatScreen = () => {
+        navigation.navigate("Statistics");
+    }
+
     const wlOptions = {
         headerRight: () => (
             <Menu>
@@ -64,7 +70,7 @@ export const WatchListScreenNavigation = () => {
                 <MenuOptions customStyles={ popupStyles }>
                     <MenuOption text="Export" onSelect={ () => exportData() }/>
                     <MenuOption text="Import" onSelect={ () => importData() }/>
-                    <MenuOption text="View stats"/>
+                    <MenuOption text="View stats" onSelect={ () => openStatScreen() }/>
                 </MenuOptions>
             </Menu>
         )
