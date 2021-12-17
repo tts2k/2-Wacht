@@ -13,9 +13,9 @@ export const BaseNavigation = () => {
     <>
       <NavigationContainer theme={ navigationTheme }>
           <Tab.Navigator screenOptions={ screenOptions }>
-            <Tab.Screen name="Popular Navigation" component={ PopularScreenNavigation } />
-            <Tab.Screen name="Search Navigation" component={ SearchScreenNavigation } />
-            <Tab.Screen name="My List Navigation" component={ WatchListScreenNavigation } />
+              <Tab.Screen name="Popular Navigation" component={ PopularScreenNavigation } options={{ title: "Popular" }}/>
+              <Tab.Screen name="Search Navigation" component={ SearchScreenNavigation } options={{ title: "Search" }}/>
+              <Tab.Screen name="My List Navigation" component={ WatchListScreenNavigation } options={{ title: "My List" }} />
           </Tab.Navigator>
       </NavigationContainer>
     </>
