@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 export default function App() {
     useEffect(() => {
         db.createDatabase();
-    })
+    }, []);
     return (
         <Provider store={store}>
             <MenuProvider>
