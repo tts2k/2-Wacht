@@ -1,17 +1,18 @@
-import React, { useReducer, useState } from "react";
-import {View, Text, StyleSheet, TextInput} from "react-native";
+import React, { useReducer } from "react";
+import { View } from "react-native";
 import { colors } from '../styles';
 import { MovieList } from '../components/List/MovieList';
+import { SearchBar } from "../components/Bar/SearchBar";
 import { tmdb, formatDate } from '../utilities';
 
 export const SearchScreen = () => {
     let initialState = {
-            movies: [],
-            error: null,
-            loading: false
+        movies: [],
+        error: null,
+        loading: false,
+        searchText: "",
+        page: 1
     };
-    let searchText = '';
-    let page = 1;
     const reducer = (state, newState) => ({ ...state, ...newState });
     const [state, setState] = useReducer(reducer, initialState);
 
@@ -39,26 +40,30 @@ export const SearchScreen = () => {
     const searchMovies = async (text) => {
         setState({ loading: true });
         let data = await fetchMovie(1, text);
-        setState({ movies: data , loading:false });
-        this.page = 1;
+        setState({ movies: data , loading:false, page: 1});
     }
 
     const loadMoreMovies = async () => {
         setState({ loading: true });
-        this.page += 1;
-        let data = await fetchMovie(this.page, this.searchText);
-        setState({ movies: state.movies.concat(data), loading: false })
+        let data = await fetchMovie(state.page + 1, state.searchText);
+        setState({ movies: state.movies.concat(data), loading: false, page: state.page + 1})
+    }
+
+    const onSearchChange = (text) => {
+        setState({ searchText: text })
+        searchMovies(text);
+    }
+
+    const onClearSearch = () => {
+        setState({ searchText: '', movies: [] })
     }
 
     return (
         <View>
-            <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1, color: colors.foreground, marginHorizontal: 2 }}
-                value={state.searchTitle}
-                onChangeText={ (text) =>  {
-                    this.searchText = text;
-                    searchMovies(text);
-                }}
+            <SearchBar
+                value={ state.searchText }
+                onChangeText={ onSearchChange }
+                onClearText={ onClearSearch }
             />
             <MovieList movies={ state.movies } loadMoreMovies={ loadMoreMovies } showSpinner={ state.loading }/>
         </View>

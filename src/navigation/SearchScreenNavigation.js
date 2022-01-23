@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 export const SearchScreenNavigation = () => {
     return (
         <Stack.Navigator screenOptions={ movieListScreenOptions }>
-            <Stack.Screen name="Search" component={ SearchScreen }/>
+            <Stack.Screen name="Search" component={ SearchScreen } />
             <Stack.Screen name="Movie Detail" component={ MovieDetailScreen } options={ detailModalOptions }/>
         </Stack.Navigator>
     )
