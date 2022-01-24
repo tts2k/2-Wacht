@@ -12,7 +12,8 @@ export const MovieDetailScreen = ({ route }) => {
   
   const dispatch = useDispatch();
   const [similar, setSimilar] = useState([]);
-  let data = route.params;
+  let data = route.params.movie;
+  data.genre = data.genre_ids;
   let gensName = [];
 
   for (let i = 0; i < genres.length; i++) {
