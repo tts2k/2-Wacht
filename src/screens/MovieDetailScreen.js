@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useReducer, useEffect } from "react";
 import { StyleSheet, Image, ScrollView } from 'react-native';
 import { View, Text } from "react-native";
+import { WebView } from "react-native-webview";
 import { colors } from '../styles';
 import { genres } from '../constants'
 import { useDispatch } from "react-redux";
@@ -10,9 +11,13 @@ import { SimliarList } from "../components/List/SimilarList";
 
 export const MovieDetailScreen = ({ route }) => {  
   
+    let initialState = {
+        similar: [],
+        videoUri: ''
+    }
+    const reducer = (state, newState) => ({ ...state, ...newState })
+    const [state, setState] = useReducer(reducer, initialState);
     const dispatch = useDispatch();
-    const [similar, setSimilar] = useState([]);
-    const [video, setVideo] = useState('');
     let data = route.params.movie;
     data.genre = data.genre_ids;
     let gensName = [];
@@ -25,13 +30,24 @@ export const MovieDetailScreen = ({ route }) => {
     }
 
     useEffect(() => {
-        tmdb.movie.similar(data.id, { page: 1 }).then((res) => {
-            let newArr = [...res.results];
-            setSimilar(newArr);
-        });
-        tmdb.movie.videos(data.id).then((res) => {
-             
-        });
+        tmdb.movie.details(data.id, { append_to_response: 'videos,similar' })
+        .then((res) => {
+            let video = res.videos.results.filter(e => e.type === "Trailer")[0];
+            let videoUri = '';
+            if (video.site === "YouTube") {
+                videoUri = `https://www.youtube.com/embed/${video.key}`;
+            }
+            else if (video.site === "Vimeo") {
+                videoUri = `https://player.vimeo.com/video/${video.key}`
+            }
+            setState({
+                similar: res.similar.results,
+                videoUri: videoUri
+            });
+        })
+        .catch((error) => {
+            console.error(error);
+        })
     },[])
 
     dispatch({ type: OPEN_LINK, payload: `https://www.themoviedb.org/movie/${data.id}` })
@@ -53,14 +69,27 @@ export const MovieDetailScreen = ({ route }) => {
                     <Text style={ [styles.attrName, styles.columnViewItemLeft] }>Genre:</Text>
                     <Text style={ [styles.attrDetail, styles.columnViewItemRight] }>{ genre2 }</Text>        
                 </View>
+
                 <Text style={ styles.sectionName }>Overview: </Text>
                 <Text style={ styles.attrDetail }>{ data.overview }</Text>
-                <Text style={ styles.sectionName }>Simliar: </Text>
-                <SimliarList movies={ similar } />
-            </View>
-    </ScrollView>
 
-  </View>
+                <Text style={ styles.sectionName }>Trailer: </Text>
+                {state.videoUri !== '' &&
+                    <WebView
+                        allowsFullscreenVideo
+                        allowsInlineMediaPlayback
+                        mediaPlaybackRequiresUserAction
+                        javaScriptEnabled
+                        style={{ width: '100%', height: 200 }}
+                        source={{ uri: state.videoUri }}
+                    />
+                }
+
+                <Text style={ styles.sectionName }>Simliar: </Text>
+                <SimliarList movies={ state.similar } />
+            </View>
+        </ScrollView>
+    </View>
 );
 };
 
@@ -122,6 +151,7 @@ const styles = StyleSheet.create({
         color: colors.foreground,
         fontSize: 16,
         fontWeight: 'bold',
-        marginTop: 10
+        marginTop: 10,
+        marginBottom: 5
     },
   });
