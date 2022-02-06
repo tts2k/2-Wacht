@@ -16,12 +16,12 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: 'contain'
     },
-    similarImage: {
+    horizontalCardImage: {
         width: 100,
         height: 150,
         alignSelf: "center"
     },
-    similarContainer: {
+    horizontalCardContainer: {
         padding: 10,
         width: 120
     },

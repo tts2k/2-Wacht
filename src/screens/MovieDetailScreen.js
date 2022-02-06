@@ -7,13 +7,16 @@ import { genres } from '../constants'
 import { useDispatch } from "react-redux";
 import { OPEN_LINK } from "../store/taskTypes";
 import { tmdb, getImageUrl } from "../utilities";
-import { SimliarList } from "../components/List/SimilarList";
+import { HorizontalList } from "../components/List/HorizontalList";
+import { SimilarCard } from "../components/Card/SimilarCard";
+import { CastCard } from "../components/Card/CastCard";
 
 export const MovieDetailScreen = ({ route }) => {  
   
     let initialState = {
         similar: [],
-        videoUri: ''
+        videoUri: '',
+        cast: []
     }
     const reducer = (state, newState) => ({ ...state, ...newState })
     const [state, setState] = useReducer(reducer, initialState);
@@ -30,19 +33,20 @@ export const MovieDetailScreen = ({ route }) => {
     }
 
     useEffect(() => {
-        tmdb.movie.details(data.id, { append_to_response: 'videos,similar' })
+        tmdb.movie.details(data.id, { append_to_response: 'videos,similar,credits' })
         .then((res) => {
             let video = res.videos.results.filter(e => e.type === "Trailer")[0];
             let videoUri = '';
-            if (video.site === "YouTube") {
+            if (video&& video.site === "YouTube") {
                 videoUri = `https://www.youtube.com/embed/${video.key}`;
             }
-            else if (video.site === "Vimeo") {
+            else if (video && video.site === "Vimeo") {
                 videoUri = `https://player.vimeo.com/video/${video.key}`
             }
             setState({
                 similar: res.similar.results,
-                videoUri: videoUri
+                videoUri: videoUri,
+                cast: res.credits.cast
             });
         })
         .catch((error) => {
@@ -54,43 +58,54 @@ export const MovieDetailScreen = ({ route }) => {
 
     const genre2 = gensName.join(', ');
 
+    const similarRenderItem = ({ item }) => {
+        return ( <SimilarCard movie={ item }/> );
+    }
+
+    const castRenderItem = ({ item }) => {
+        return ( <CastCard cast={ item }/> )
+    }
+
     return (
-    <View>
-        <ScrollView style={ styles.container }>
-            <Image source={{ uri: getImageUrl(data.backdrop_path, true) }} style={ styles.backdrop } />
-            <View style={ styles.innerContainer }>
-                <Image source={{ uri: getImageUrl(data.poster_path, false) }} style={ styles.poster }/>
-                <Text style={{ fontSize: 24, color: colors.foreground, textAlign: "center",  fontWeight: 'bold', marginTop: 20 }}> { data.title + '\n'}</Text>
-                <View style={ styles.columnView }>
-                    <Text style={ [styles.attrName, styles.columnViewItemLeft] }>Score: </Text>
-                    <Text style={ [styles.attrDetail, styles.columnViewItemRight] }>{ data.score }</Text>        
-                    <Text style={ [styles.attrName, styles.columnViewItemLeft] }>Release: </Text>
-                    <Text style={ [styles.attrDetail, styles.columnViewItemRight]}>{ data.release_date }</Text>        
-                    <Text style={ [styles.attrName, styles.columnViewItemLeft] }>Genre:</Text>
-                    <Text style={ [styles.attrDetail, styles.columnViewItemRight] }>{ genre2 }</Text>        
+        <View>
+            <ScrollView style={ styles.container }>
+                <Image source={{ uri: getImageUrl(data.backdrop_path, true) }} style={ styles.backdrop } />
+                <View style={ styles.innerContainer }>
+                    <Image source={{ uri: getImageUrl(data.poster_path, false) }} style={ styles.poster }/>
+                    <Text style={{ fontSize: 24, color: colors.foreground, textAlign: "center",  fontWeight: 'bold', marginTop: 20 }}> { data.title + '\n'}</Text>
+                    <View style={ styles.columnView }>
+                        <Text style={ [styles.attrName, styles.columnViewItemLeft] }>Score: </Text>
+                        <Text style={ [styles.attrDetail, styles.columnViewItemRight] }>{ data.score }</Text>        
+                        <Text style={ [styles.attrName, styles.columnViewItemLeft] }>Release: </Text>
+                        <Text style={ [styles.attrDetail, styles.columnViewItemRight]}>{ data.release_date }</Text>        
+                        <Text style={ [styles.attrName, styles.columnViewItemLeft] }>Genre:</Text>
+                        <Text style={ [styles.attrDetail, styles.columnViewItemRight] }>{ genre2 }</Text>        
+                    </View>
+
+                    <Text style={ styles.sectionName }>Overview: </Text>
+                    <Text style={ styles.attrDetail }>{ data.overview }</Text>
+
+                    <Text style={ styles.sectionName }>Trailer: </Text>
+                    { state.videoUri !== '' &&
+                        <WebView
+                            allowsFullscreenVideo
+                            allowsInlineMediaPlayback
+                            mediaPlaybackRequiresUserAction
+                            javaScriptEnabled
+                            style={{ width: '100%', height: 200 }}
+                            source={{ uri: state.videoUri }}
+                        />
+                    }
+
+                    <Text style={ styles.sectionName }>Cast: </Text>
+                    <HorizontalList data={ state.cast } renderItem={ castRenderItem } />
+
+                    <Text style={ styles.sectionName }>Simliar: </Text>
+                    <HorizontalList data={ state.similar } renderItem={ similarRenderItem } />
                 </View>
-
-                <Text style={ styles.sectionName }>Overview: </Text>
-                <Text style={ styles.attrDetail }>{ data.overview }</Text>
-
-                <Text style={ styles.sectionName }>Trailer: </Text>
-                {state.videoUri !== '' &&
-                    <WebView
-                        allowsFullscreenVideo
-                        allowsInlineMediaPlayback
-                        mediaPlaybackRequiresUserAction
-                        javaScriptEnabled
-                        style={{ width: '100%', height: 200 }}
-                        source={{ uri: state.videoUri }}
-                    />
-                }
-
-                <Text style={ styles.sectionName }>Simliar: </Text>
-                <SimliarList movies={ state.similar } />
-            </View>
-        </ScrollView>
-    </View>
-);
+            </ScrollView>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
