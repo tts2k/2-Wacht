@@ -4,7 +4,7 @@ import Menu, { MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-m
 import { useNavigation } from '@react-navigation/native';
 import { styles as S } from './styles';
 import { popupStyles } from '../../styles'
-import { db } from '../../utilities';
+import { db, getImageUrl } from '../../utilities';
 import { useDispatch } from 'react-redux';
 import { INSERT_MOVIE } from '../../store/taskTypes'
 
@@ -39,7 +39,7 @@ export const MovieCard = ({ movie }) => {
 
     return (
         <TouchableOpacity style={ S.container } onPress={ openDetailScreen } onLongPress={ () => openMenu() }>
-            <Image source={{ uri: movie.poster_path }} style={ S.poster }/>
+            <Image source={{ uri: getImageUrl(movie.poster_path) }} style={ S.poster }/>
             <View style={ S.body }>
                 <Text style={ S.title } numberOfLines={2}>{ movie.title }</Text>
                 <Text style={ S.bodyText }>{ movie.release_date }</Text>

@@ -29,4 +29,12 @@ const downloadImageToBase64 = async (url) => {
     return base64;
 }
 
-export { formatDate, downloadImageToBase64, generateDateForExport };
+const getImageUrl = (path, isBackdrop = false) => {
+    if (!isBackdrop) {
+        return `https://www.themoviedb.org/t/p/w600_and_h900_bestv2${path}`;
+    } else {
+        return `https://image.tmdb.org/t/p/w500${path}`;
+    }
+}
+
+export { formatDate, downloadImageToBase64, generateDateForExport, getImageUrl};

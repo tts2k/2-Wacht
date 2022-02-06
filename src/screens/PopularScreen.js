@@ -19,7 +19,6 @@ export const PopularScreen = () => {
 
     const processMovieList = (list) => {
         list.forEach((e) => {
-            e.poster_path= `https://www.themoviedb.org/t/p/w600_and_h900_bestv2${e.poster_path}`
             if(e.release_date !== '')
                 e.release_date = formatDate(e.release_date);
             else
