@@ -13,14 +13,29 @@ export const CastCard = ({ cast }) => {
         <Image source={{ uri: `https://www.themoviedb.org/t/p/w600_and_h900_bestv2${cast.profile_path}` }} style={ S.horizontalCardImage }/>
     )
 
-    const text = (
-        <Text style={ S.smallTitle }>{ cast.name + '\n' } </Text>
+    const title = (
+        <Text 
+            style={ S.smallTitle }
+            numberOfLines={1}
+        >
+            { cast.name + '\n' } 
+        </Text>
+    )
+
+    const subTitle = (
+        <Text 
+            style={ S.smallSubTitle }
+            numberOfLines={1}
+        >
+            { cast.character + '\n' } 
+        </Text>
     )
 
     return (
         <HorizontalCard
             image={ image }
-            text={ text }
+            title={ title }
+            subTitle={ subTitle }
             onPress={ openCreditLink }
         />
     )

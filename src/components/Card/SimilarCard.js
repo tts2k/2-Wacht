@@ -17,16 +17,28 @@ export const SimilarCard = ({ movie }) => {
             style={ S.horizontalCardImage }
         />)
 
-    const text = (
-        <Text style={ S.smallTitle }>
-            { movie.title + '\n' } ({ movie.release_date.slice(0,4) })
+    const title = (
+        <Text 
+            style={ S.smallTitle }
+            numberOfLines={1}
+        >
+            { movie.title + '\n' }
+        </Text>
+    )
+
+    const subTitle = (
+        <Text 
+            style={ S.smallSubTitle }
+        >
+            { movie.release_date.slice(0,4) }
         </Text>
     )
 
     return (
         <HorizontalCard 
             image={ image }
-            text={ text }
+            title={ title }
+            subTitle={ subTitle }
             onPress={ openDetailScreen }
         />
     )

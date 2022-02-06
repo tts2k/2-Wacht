@@ -100,7 +100,7 @@ export const MovieDetailScreen = ({ route }) => {
                     <Text style={ styles.sectionName }>Cast: </Text>
                     <HorizontalList data={ state.cast } renderItem={ castRenderItem } />
 
-                    <Text style={ styles.sectionName }>Simliar: </Text>
+                    <Text style={ styles.sectionName }>Similar Movies: </Text>
                     <HorizontalList data={ state.similar } renderItem={ similarRenderItem } />
                 </View>
             </ScrollView>

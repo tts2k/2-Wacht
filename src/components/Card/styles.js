@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
         alignSelf: "center"
     },
     horizontalCardContainer: {
-        padding: 10,
+        paddingRight: 20,
+        marginTop: 8,
         width: 120
     },
     body: {
@@ -39,8 +40,13 @@ const styles = StyleSheet.create({
     },
     smallTitle: {
         color: colors.foreground,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: 'bold',
+        textAlign: 'center'
+    },
+    smallSubTitle: {
+        color: colors.foreground,
+        fontSize: 10,
         textAlign: 'center'
     },
     bodyText: {
