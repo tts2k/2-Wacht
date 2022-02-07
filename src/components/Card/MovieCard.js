@@ -26,6 +26,9 @@ export const MovieCard = ({ movie }) => {
             if (error.message.startsWith("UNIQUE")) {
                 ToastAndroid.show("You have already added this movie to your list", ToastAndroid.SHORT);
             }
+            else {
+                ToastAndroid.show(error.message, ToastAndroid.LONG);
+            }
         }
     }
 

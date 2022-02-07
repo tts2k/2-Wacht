@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-import { downloadImageToBase64 } from "./misc";
+import { downloadImageToBase64, getImageUrl } from "./misc";
 
 const db = SQLite.openDatabase("wl.db");
 
@@ -49,8 +49,8 @@ const getMovie = async (id) => {
 }
 
 const insertMovie = async (movie) => {
-    let poster = await downloadImageToBase64(movie.poster_path);
-    let backdrop = await downloadImageToBase64(`https://image.tmdb.org/t/p/w500${movie.backdrop_path}`);
+    let poster = await downloadImageToBase64(getImageUrl(movie.poster_path));
+    let backdrop = await downloadImageToBase64(getImageUrl(movie.backdrop_path, true));
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(`INSERT INTO Movies
