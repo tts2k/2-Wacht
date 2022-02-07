@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer }from "react";
-import { StyleSheet, Image, ScrollView, Button, Linking } from "react-native";
+import { StyleSheet, Image, ScrollView } from "react-native";
 import { View, Text } from "react-native";
 import { colors } from "../styles";
 import { genres } from "../constants";

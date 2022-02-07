@@ -48,11 +48,12 @@ const openLink = () => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
 }
 
-export const detailModalOptions = {
-    headerRight: () => (
-        <TouchableOpacity onPress={ () => openLink() }>
-            <MaterialCommunityIcons name="web" size={25} color={ colors.foreground }  style={{ paddingRight: 10 }}/>
-        </TouchableOpacity>
-    )
-}
+//export const detailModalOptions = {
+//    headerRight: () => {
+//        return (
+//        <TouchableOpacity onPress={ () => openLink() }>
+//            <MaterialCommunityIcons name="web" size={25} color={ colors.foreground }  style={{ paddingRight: 10 }}/>
+//        </TouchableOpacity>
+//        )
+//}}
 

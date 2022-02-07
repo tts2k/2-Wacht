@@ -1,15 +1,15 @@
 import React, { useReducer, useEffect } from "react";
-import { StyleSheet, Image, ScrollView } from 'react-native';
+import { StyleSheet, Image, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { View, Text } from "react-native";
 import { WebView } from "react-native-webview";
 import { colors } from '../styles';
 import { genres } from '../constants'
-import { useDispatch } from "react-redux";
-import { OPEN_LINK } from "../store/taskTypes";
 import { tmdb, getImageUrl } from "../utilities";
 import { HorizontalList } from "../components/List/HorizontalList";
 import { SimilarCard } from "../components/Card/SimilarCard";
 import { CastCard } from "../components/Card/CastCard";
+import { useNavigation } from "@react-navigation/native";
+import { HeaderOpenLinkButton } from "../components/Button/HeaderOpenLinkButton";
 
 export const MovieDetailScreen = ({ route }) => {  
   
@@ -18,9 +18,11 @@ export const MovieDetailScreen = ({ route }) => {
         videoUri: '',
         cast: []
     }
+    const navigation = useNavigation();
     const reducer = (state, newState) => ({ ...state, ...newState })
     const [state, setState] = useReducer(reducer, initialState);
-    const dispatch = useDispatch();
+
+
     let data = route.params.movie;
     data.genre = data.genre_ids;
     let gensName = [];
@@ -33,6 +35,11 @@ export const MovieDetailScreen = ({ route }) => {
     }
 
     useEffect(() => {
+        let headerRight = () => (
+            <HeaderOpenLinkButton url={`https://www.themoviedb.org/movie/${data.id}`}/>
+        )
+        navigation.setOptions({ headerRight: headerRight });
+
         tmdb.movie.details(data.id, { append_to_response: 'videos,similar,credits' })
         .then((res) => {
             let video = res.videos.results.filter(e => e.type === "Trailer")[0];
@@ -53,8 +60,6 @@ export const MovieDetailScreen = ({ route }) => {
             console.error(error);
         })
     },[])
-
-    dispatch({ type: OPEN_LINK, payload: `https://www.themoviedb.org/movie/${data.id}` })
 
     const genre2 = gensName.join(', ');
 
@@ -116,7 +121,8 @@ const styles = StyleSheet.create({
     },
     innerContainer: {
         paddingLeft: 20,
-        paddingRight: 20
+        paddingRight: 20,
+        marginBottom: 5
     },
     backdrop: {
         width: '100%',

@@ -1,10 +1,5 @@
-import { INSERT_MOVIE, OPEN_LINK} from "./taskTypes"
+import { INSERT_MOVIE } from "./taskTypes"
 
 export const insertTASK = () => ({
     type: INSERT_MOVIE,
 });
-
-export const openLink = (url) => ({
-    type: OPEN_LINK,
-    url
-})
